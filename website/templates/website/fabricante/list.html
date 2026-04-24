@@ -1,0 +1,51 @@
+{% extends "website/model.html" %}
+
+{% block title %}Fabricantes{% endblock %}
+
+{% block content %}
+<section class="card list-card">
+    <div class="section-header">
+        <h2>Fabricantes</h2>
+        <a class="btn" href="{% url 'fabricante-create' %}">Novo</a>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Website</th>
+                <th class="acoes">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for fabricante in fabricantes %}
+            <tr>
+                <td>{{ fabricante.nome }}</td>
+                <td>
+                    {% if fabricante.website %}
+                    <a href="{{ fabricante.website }}" target="_blank" rel="noopener">{{ fabricante.website }}</a>
+                    {% else %}
+                    -
+                    {% endif %}
+                </td>
+                <td class="acoes">
+                    <a class="btn-action btn-view" href="{% url 'fabricante-detail' fabricante.pk %}">
+                        <i class="fa-solid fa-eye"></i> Ver
+                    </a>
+                    <a class="btn-action btn-edit" href="{% url 'fabricante-update' fabricante.pk %}">
+                        <i class="fa-solid fa-pen-to-square"></i> Editar
+                    </a>
+                    <a class="btn-action btn-delete" href="{% url 'fabricante-delete' fabricante.pk %}">
+                        <i class="fa-solid fa-trash"></i> Excluir
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3">Nenhum fabricante cadastrado.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}

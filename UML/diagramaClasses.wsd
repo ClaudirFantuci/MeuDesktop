@@ -1,0 +1,240 @@
+@startuml Diagrama_Classes_Montagem_PC
+
+!theme plain
+skinparam classAttributeIconSize 0
+skinparam classFontSize 14
+skinparam classHeaderBackgroundColor #E8EAF6
+skinparam packageBackgroundColor #FAFAFA
+skinparam arrowThickness 2
+skinparam shadowing false
+
+title **Sistema de Simulação de Montagem de Computador**\nDiagrama de Classes
+
+' ============================================================
+' ENUMS / TIPOS
+' ============================================================
+
+enum SocketChoices {
+  LGA1700
+  LGA1851
+  LGA1200
+  AM5
+  AM4
+}
+
+enum TipoMemoriaChoices {
+  DDR4
+  DDR5
+}
+
+enum FormFactorChoices {
+  ATX
+  MATX
+  ITX
+  EATX
+}
+
+enum TipoArmazenamentoChoices {
+  SSD_SATA
+  SSD_NVME
+  HDD
+}
+
+enum InterfaceArmazenamentoChoices {
+  SATA3
+  M2_NVME
+  M2_SATA
+}
+
+enum CertificacaoChoices {
+  GENERIC
+  80PLUS
+  80PLUS_BRONZE
+  80PLUS_SILVER
+  80PLUS_GOLD
+  80PLUS_PLATINUM
+  80PLUS_TITANIUM
+}
+
+' ============================================================
+' CLASSE USER (Django Auth - NÃO CONTA)
+' ============================================================
+
+package "Django Auth (não conta)" #F5F5F5 {
+  class User <<Django>> {
+    - id : int
+    - username : str
+    - email : str
+    - password : str
+    - first_name : str
+    - last_name : str
+  }
+}
+
+' ============================================================
+' CLASSES DO SISTEMA
+' ============================================================
+
+package "Componentes" #E3F2FD {
+
+  class Fabricante {
+    - id : int
+    - nome : str
+    - logo : ImageField
+    - website : URLField
+  }
+
+  class Processador {
+    - id : int
+    - nome : str
+    - fabricante : FK(Fabricante)
+    - socket : SocketChoices
+    - cores : int
+    - threads : int
+    - frequencia_base : decimal (GHz)
+    - frequencia_turbo : decimal (GHz)
+    - tdp : int (Watts)
+    - tem_video_integrado : bool
+    - geracao : str
+    - preco : decimal
+    - imagem : ImageField
+    - descricao : text
+    - disponivel : bool
+  }
+
+  class PlacaMae {
+    - id : int
+    - nome : str
+    - fabricante : FK(Fabricante)
+    - socket : SocketChoices
+    - chipset : str
+    - tipo_memoria : TipoMemoriaChoices
+    - slots_ram : int
+    - max_memoria_gb : int
+    - frequencia_max_ram : int (MHz)
+    - form_factor : FormFactorChoices
+    - tem_slot_m2 : bool
+    - quantidade_m2 : int
+    - portas_sata : int
+    - slot_pcie_x16 : int
+    - preco : decimal
+    - imagem : ImageField
+    - descricao : text
+    - disponivel : bool
+  }
+
+  class MemoriaRAM {
+    - id : int
+    - nome : str
+    - fabricante : FK(Fabricante)
+    - tipo : TipoMemoriaChoices
+    - capacidade_gb : int
+    - quantidade_modulos : int
+    - frequencia_mhz : int
+    - latencia : str
+    - preco : decimal
+    - imagem : ImageField
+    - descricao : text
+    - disponivel : bool
+  }
+
+  class PlacaDeVideo {
+    - id : int
+    - nome : str
+    - fabricante : FK(Fabricante)
+    - gpu_chip : str
+    - memoria_gb : int
+    - tipo_memoria : str
+    - interface : str
+    - consumo_watts : int
+    - fonte_recomendada_watts : int
+    - comprimento_mm : int
+    - preco : decimal
+    - imagem : ImageField
+    - descricao : text
+    - disponivel : bool
+  }
+
+  class Armazenamento {
+    - id : int
+    - nome : str
+    - fabricante : FK(Fabricante)
+    - tipo : TipoArmazenamentoChoices
+    - interface : InterfaceArmazenamentoChoices
+    - capacidade_gb : int
+    - velocidade_leitura : int (MB/s)
+    - velocidade_escrita : int (MB/s)
+    - preco : decimal
+    - imagem : ImageField
+    - descricao : text
+    - disponivel : bool
+  }
+
+  class Fonte {
+    - id : int
+    - nome : str
+    - fabricante : FK(Fabricante)
+    - potencia_watts : int
+    - certificacao : CertificacaoChoices
+    - modular : bool
+    - preco : decimal
+    - imagem : ImageField
+    - descricao : text
+    - disponivel : bool
+  }
+
+}
+
+package "Build System" #E8F5E9 {
+
+  class Montagem {
+    - id : int
+    - usuario : FK(User)
+    - nome : str
+    - processador : FK(Processador) <<nullable>>
+    - placa_mae : FK(PlacaMae) <<nullable>>
+    - memoria_ram : FK(MemoriaRAM) <<nullable>>
+    - placa_de_video : FK(PlacaDeVideo) <<nullable>>
+    - armazenamento : FK(Armazenamento) <<nullable>>
+    - fonte : FK(Fonte) <<nullable>>
+    - data_criacao : datetime
+    - data_atualizacao : datetime
+    - finalizada : bool
+  }
+
+  class HistoricoMontagem {
+    - id : int
+    - montagem : FK(Montagem)
+    - acao : str
+    - componente_tipo : str
+    - componente_nome : str
+    - data : datetime
+  }
+
+}
+
+' ============================================================
+' RELACIONAMENTOS
+' ============================================================
+
+Fabricante "1" --> "*" Processador : fabrica >
+Fabricante "1" --> "*" PlacaMae : fabrica >
+Fabricante "1" --> "*" MemoriaRAM : fabrica >
+Fabricante "1" --> "*" PlacaDeVideo : fabrica >
+Fabricante "1" --> "*" Armazenamento : fabrica >
+Fabricante "1" --> "*" Fonte : fabrica >
+
+User "1" --> "*" Montagem : possui >
+
+Montagem "*" --> "0..1" Processador : seleciona >
+Montagem "*" --> "0..1" PlacaMae : seleciona >
+Montagem "*" --> "0..1" MemoriaRAM : seleciona >
+Montagem "*" --> "0..1" PlacaDeVideo : seleciona >
+Montagem "*" --> "0..1" Armazenamento : seleciona >
+Montagem "*" --> "0..1" Fonte : seleciona >
+
+Montagem "1" --> "*" HistoricoMontagem : registra >
+
+
+
+@enduml

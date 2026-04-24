@@ -1,0 +1,24 @@
+{% extends "website/model.html" %}
+
+{% block title %}Detalhes do Fabricante{% endblock %}
+
+{% block content %}
+<section class="card small">
+    <h2>Detalhes do Fabricante</h2>
+
+    <div class="detail-row"><strong>Nome:</strong> {{ object.nome }}</div>
+    <div class="detail-row">
+        <strong>Website:</strong>
+        {% if object.website %}
+        <a href="{{ object.website }}" target="_blank" rel="noopener">{{ object.website }}</a>
+        {% else %}
+        -
+        {% endif %}
+    </div>
+
+    <div class="actions">
+        <a class="btn" href="{% url 'fabricante-update' object.pk %}">Editar</a>
+        <a class="btn btn-secondary" href="{% url 'fabricante-list' %}">Voltar</a>
+    </div>
+</section>
+{% endblock %}
