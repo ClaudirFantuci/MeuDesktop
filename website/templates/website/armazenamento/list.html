@@ -1,0 +1,45 @@
+{% extends "website/model.html" %}
+
+{% block title %}Armazenamentos{% endblock %}
+
+{% block content %}
+<section class="card list-card">
+    <div class="section-header">
+        <h2>Armazenamentos</h2>
+        <a class="btn" href="{% url 'armazenamento-create' %}">Novo</a>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Fabricante</th>
+                <th>Tipo</th>
+                <th>Interface</th>
+                <th>Capacidade</th>
+                <th>Preço</th>
+                <th class="acoes">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in armazenamentos %}
+            <tr>
+                <td>{{ item.nome }}</td>
+                <td>{{ item.fabricante }}</td>
+                <td>{{ item.get_tipo_display }}</td>
+                <td>{{ item.get_interface_display }}</td>
+                <td>{{ item.capacidade_gb }} GB</td>
+                <td>R$ {{ item.preco }}</td>
+                <td class="acoes">
+                    <a class="btn-action btn-view" href="{% url 'armazenamento-detail' item.pk %}"><i class="fa-solid fa-eye"></i> Ver</a>
+                    <a class="btn-action btn-edit" href="{% url 'armazenamento-update' item.pk %}"><i class="fa-solid fa-pen-to-square"></i> Editar</a>
+                    <a class="btn-action btn-delete" href="{% url 'armazenamento-delete' item.pk %}"><i class="fa-solid fa-trash"></i> Excluir</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="7">Nenhum armazenamento cadastrado.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}

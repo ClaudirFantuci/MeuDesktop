@@ -1,0 +1,24 @@
+{% extends "website/model.html" %}
+
+{% block title %}Detalhes da Memória RAM{% endblock %}
+
+{% block content %}
+<section class="card small">
+    <h2>Detalhes da Memória RAM</h2>
+
+    <div class="detail-row"><strong>Nome:</strong> {{ object.nome }}</div>
+    <div class="detail-row"><strong>Fabricante:</strong> {{ object.fabricante }}</div>
+    <div class="detail-row"><strong>Tipo:</strong> {{ object.get_tipo_display }}</div>
+    <div class="detail-row"><strong>Capacidade:</strong> {{ object.capacidade_gb }} GB</div>
+    <div class="detail-row"><strong>Módulos:</strong> {{ object.quantidade_modulos }}</div>
+    <div class="detail-row"><strong>Frequência:</strong> {{ object.frequencia_mhz }} MHz</div>
+    <div class="detail-row"><strong>Latência:</strong> {{ object.latencia|default:"-" }}</div>
+    <div class="detail-row"><strong>Preço:</strong> R$ {{ object.preco }}</div>
+    <div class="detail-row"><strong>Descrição:</strong> {{ object.descricao|default:"-" }}</div>
+
+    <div class="actions">
+        <a class="btn" href="{% url 'memoriam-update' object.pk %}">Editar</a>
+        <a class="btn btn-secondary" href="{% url 'memoriam-list' %}">Voltar</a>
+    </div>
+</section>
+{% endblock %}

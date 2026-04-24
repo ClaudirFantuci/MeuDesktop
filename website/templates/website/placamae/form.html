@@ -1,0 +1,19 @@
+{% extends "website/model.html" %}
+
+{% block title %}{{ titulo }}{% endblock %}
+
+{% block content %}
+<section class="card small">
+    <h2>{{ titulo }}</h2>
+
+    <form method="post" class="form-grid">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <div class="actions">
+            <button class="btn" type="submit">{{ botao }}</button>
+            <a class="btn btn-secondary" href="{% url 'placamae-list' %}">Cancelar</a>
+        </div>
+    </form>
+</section>
+{% endblock %}

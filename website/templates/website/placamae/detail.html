@@ -1,0 +1,26 @@
+{% extends "website/model.html" %}
+
+{% block title %}Detalhes da Placa-mãe{% endblock %}
+
+{% block content %}
+<section class="card small">
+    <h2>Detalhes da Placa-mãe</h2>
+
+    <div class="detail-row"><strong>Nome:</strong> {{ object.nome }}</div>
+    <div class="detail-row"><strong>Fabricante:</strong> {{ object.fabricante }}</div>
+    <div class="detail-row"><strong>Socket:</strong> {{ object.get_socket_display }}</div>
+    <div class="detail-row"><strong>Chipset:</strong> {{ object.chipset }}</div>
+    <div class="detail-row"><strong>Memória:</strong> {{ object.get_tipo_memoria_display }} - até {{ object.max_memoria_gb }}GB</div>
+    <div class="detail-row"><strong>Slots RAM:</strong> {{ object.slots_ram }}</div>
+    <div class="detail-row"><strong>Frequência máx. RAM:</strong> {{ object.frequencia_max_ram }} MHz</div>
+    <div class="detail-row"><strong>Form factor:</strong> {{ object.get_form_factor_display }}</div>
+    <div class="detail-row"><strong>M.2 / SATA:</strong> {{ object.quantidade_m2 }} / {{ object.portas_sata }}</div>
+    <div class="detail-row"><strong>PCIe x16:</strong> {{ object.slot_pcie_x16 }}</div>
+    <div class="detail-row"><strong>Preço:</strong> R$ {{ object.preco }}</div>
+
+    <div class="actions">
+        <a class="btn" href="{% url 'placamae-update' object.pk %}">Editar</a>
+        <a class="btn btn-secondary" href="{% url 'placamae-list' %}">Voltar</a>
+    </div>
+</section>
+{% endblock %}

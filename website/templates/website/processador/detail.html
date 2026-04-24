@@ -1,0 +1,25 @@
+{% extends "website/model.html" %}
+
+{% block title %}Detalhes do Processador{% endblock %}
+
+{% block content %}
+<section class="card small">
+    <h2>Detalhes do Processador</h2>
+
+    <div class="detail-row"><strong>Nome:</strong> {{ object.nome }}</div>
+    <div class="detail-row"><strong>Fabricante:</strong> {{ object.fabricante }}</div>
+    <div class="detail-row"><strong>Socket:</strong> {{ object.get_socket_display }}</div>
+    <div class="detail-row"><strong>Núcleos/Threads:</strong> {{ object.cores }}/{{ object.threads }}</div>
+    <div class="detail-row"><strong>Frequência base/turbo:</strong> {{ object.frequencia_base }} / {{ object.frequencia_turbo }} GHz</div>
+    <div class="detail-row"><strong>TDP:</strong> {{ object.tdp }} W</div>
+    <div class="detail-row"><strong>Vídeo integrado:</strong> {% if object.tem_video_integrado %}Sim{% else %}Não{% endif %}</div>
+    <div class="detail-row"><strong>Geração:</strong> {{ object.geracao|default:"-" }}</div>
+    <div class="detail-row"><strong>Preço:</strong> R$ {{ object.preco }}</div>
+    <div class="detail-row"><strong>Descrição:</strong> {{ object.descricao|default:"-" }}</div>
+
+    <div class="actions">
+        <a class="btn" href="{% url 'processador-update' object.pk %}">Editar</a>
+        <a class="btn btn-secondary" href="{% url 'processador-list' %}">Voltar</a>
+    </div>
+</section>
+{% endblock %}

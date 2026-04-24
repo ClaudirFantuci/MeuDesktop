@@ -1,0 +1,24 @@
+{% extends "website/model.html" %}
+
+{% block title %}Detalhes da Placa de Vídeo{% endblock %}
+
+{% block content %}
+<section class="card small">
+    <h2>Detalhes da Placa de Vídeo</h2>
+
+    <div class="detail-row"><strong>Nome:</strong> {{ object.nome }}</div>
+    <div class="detail-row"><strong>Fabricante:</strong> {{ object.fabricante }}</div>
+    <div class="detail-row"><strong>GPU:</strong> {{ object.gpu_chip }}</div>
+    <div class="detail-row"><strong>Memória:</strong> {{ object.memoria_gb }} GB {{ object.tipo_memoria }}</div>
+    <div class="detail-row"><strong>Interface:</strong> {{ object.interface }}</div>
+    <div class="detail-row"><strong>Consumo:</strong> {{ object.consumo_watts }} W</div>
+    <div class="detail-row"><strong>Fonte recomendada:</strong> {{ object.fonte_recomendada_watts }} W</div>
+    <div class="detail-row"><strong>Comprimento:</strong> {{ object.comprimento_mm }} mm</div>
+    <div class="detail-row"><strong>Preço:</strong> R$ {{ object.preco }}</div>
+
+    <div class="actions">
+        <a class="btn" href="{% url 'placavideo-update' object.pk %}">Editar</a>
+        <a class="btn btn-secondary" href="{% url 'placavideo-list' %}">Voltar</a>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "website/model.html" %}
+
+{% block title %}Detalhes da Fonte{% endblock %}
+
+{% block content %}
+<section class="card small">
+    <h2>Detalhes da Fonte</h2>
+
+    <div class="detail-row"><strong>Nome:</strong> {{ object.nome }}</div>
+    <div class="detail-row"><strong>Fabricante:</strong> {{ object.fabricante }}</div>
+    <div class="detail-row"><strong>Potência:</strong> {{ object.potencia_watts }} W</div>
+    <div class="detail-row"><strong>Certificação:</strong> {{ object.get_certificacao_display }}</div>
+    <div class="detail-row"><strong>Modular:</strong> {% if object.modular %}Sim{% else %}Não{% endif %}</div>
+    <div class="detail-row"><strong>Preço:</strong> R$ {{ object.preco }}</div>
+    <div class="detail-row"><strong>Descrição:</strong> {{ object.descricao|default:"-" }}</div>
+
+    <div class="actions">
+        <a class="btn" href="{% url 'fonte-update' object.pk %}">Editar</a>
+        <a class="btn btn-secondary" href="{% url 'fonte-list' %}">Voltar</a>
+    </div>
+</section>
+{% endblock %}

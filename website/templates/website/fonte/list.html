@@ -1,0 +1,43 @@
+{% extends "website/model.html" %}
+
+{% block title %}Fontes{% endblock %}
+
+{% block content %}
+<section class="card list-card">
+    <div class="section-header">
+        <h2>Fontes</h2>
+        <a class="btn" href="{% url 'fonte-create' %}">Nova</a>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Fabricante</th>
+                <th>Potência</th>
+                <th>Certificação</th>
+                <th>Preço</th>
+                <th class="acoes">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in fontes %}
+            <tr>
+                <td>{{ item.nome }}</td>
+                <td>{{ item.fabricante }}</td>
+                <td>{{ item.potencia_watts }} W</td>
+                <td>{{ item.get_certificacao_display }}</td>
+                <td>R$ {{ item.preco }}</td>
+                <td class="acoes">
+                    <a class="btn-action btn-view" href="{% url 'fonte-detail' item.pk %}"><i class="fa-solid fa-eye"></i> Ver</a>
+                    <a class="btn-action btn-edit" href="{% url 'fonte-update' item.pk %}"><i class="fa-solid fa-pen-to-square"></i> Editar</a>
+                    <a class="btn-action btn-delete" href="{% url 'fonte-delete' item.pk %}"><i class="fa-solid fa-trash"></i> Excluir</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="6">Nenhuma fonte cadastrada.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "website/model.html" %}
+
+{% block title %}Processadores{% endblock %}
+
+{% block content %}
+<section class="card list-card">
+    <div class="section-header">
+        <h2>Processadores</h2>
+        <a class="btn" href="{% url 'processador-create' %}">Novo</a>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Fabricante</th>
+                <th>Socket</th>
+                <th>C/T</th>
+                <th>Preço</th>
+                <th>Disponível</th>
+                <th class="acoes">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in processadores %}
+            <tr>
+                <td>{{ item.nome }}</td>
+                <td>{{ item.fabricante }}</td>
+                <td>{{ item.get_socket_display }}</td>
+                <td>{{ item.cores }}/{{ item.threads }}</td>
+                <td>R$ {{ item.preco }}</td>
+                <td>{% if item.disponivel %}Sim{% else %}Não{% endif %}</td>
+                <td class="acoes">
+                    <a class="btn-action btn-view" href="{% url 'processador-detail' item.pk %}"><i class="fa-solid fa-eye"></i> Ver</a>
+                    <a class="btn-action btn-edit" href="{% url 'processador-update' item.pk %}"><i class="fa-solid fa-pen-to-square"></i> Editar</a>
+                    <a class="btn-action btn-delete" href="{% url 'processador-delete' item.pk %}"><i class="fa-solid fa-trash"></i> Excluir</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="7">Nenhum processador cadastrado.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}

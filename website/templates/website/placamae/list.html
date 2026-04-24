@@ -1,0 +1,43 @@
+{% extends "website/model.html" %}
+
+{% block title %}Placas-mãe{% endblock %}
+
+{% block content %}
+<section class="card list-card">
+    <div class="section-header">
+        <h2>Placas-mãe</h2>
+        <a class="btn" href="{% url 'placamae-create' %}">Nova</a>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Fabricante</th>
+                <th>Socket</th>
+                <th>Chipset</th>
+                <th>Preço</th>
+                <th class="acoes">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in placas_mae %}
+            <tr>
+                <td>{{ item.nome }}</td>
+                <td>{{ item.fabricante }}</td>
+                <td>{{ item.get_socket_display }}</td>
+                <td>{{ item.chipset }}</td>
+                <td>R$ {{ item.preco }}</td>
+                <td class="acoes">
+                    <a class="btn-action btn-view" href="{% url 'placamae-detail' item.pk %}"><i class="fa-solid fa-eye"></i> Ver</a>
+                    <a class="btn-action btn-edit" href="{% url 'placamae-update' item.pk %}"><i class="fa-solid fa-pen-to-square"></i> Editar</a>
+                    <a class="btn-action btn-delete" href="{% url 'placamae-delete' item.pk %}"><i class="fa-solid fa-trash"></i> Excluir</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="6">Nenhuma placa-mãe cadastrada.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}

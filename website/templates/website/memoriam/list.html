@@ -1,0 +1,45 @@
+{% extends "website/model.html" %}
+
+{% block title %}Memórias RAM{% endblock %}
+
+{% block content %}
+<section class="card list-card">
+    <div class="section-header">
+        <h2>Memórias RAM</h2>
+        <a class="btn" href="{% url 'memoriam-create' %}">Nova</a>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Fabricante</th>
+                <th>Tipo</th>
+                <th>Capacidade</th>
+                <th>Frequência</th>
+                <th>Preço</th>
+                <th class="acoes">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in memorias_ram %}
+            <tr>
+                <td>{{ item.nome }}</td>
+                <td>{{ item.fabricante }}</td>
+                <td>{{ item.get_tipo_display }}</td>
+                <td>{{ item.capacidade_gb }} GB</td>
+                <td>{{ item.frequencia_mhz }} MHz</td>
+                <td>R$ {{ item.preco }}</td>
+                <td class="acoes">
+                    <a class="btn-action btn-view" href="{% url 'memoriam-detail' item.pk %}"><i class="fa-solid fa-eye"></i> Ver</a>
+                    <a class="btn-action btn-edit" href="{% url 'memoriam-update' item.pk %}"><i class="fa-solid fa-pen-to-square"></i> Editar</a>
+                    <a class="btn-action btn-delete" href="{% url 'memoriam-delete' item.pk %}"><i class="fa-solid fa-trash"></i> Excluir</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="7">Nenhuma memória RAM cadastrada.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}

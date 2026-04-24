@@ -20,7 +20,12 @@
             <nav id="menu-principal" class="menu-links">
                 <a href="{% url 'index' %}">Início</a>
                 <a href="{% url 'fabricante-list' %}">Fabricantes</a>
-                <a class="btn-menu" href="{% url 'fabricante-create' %}">Novo Fabricante</a>
+                <a href="{% url 'processador-list' %}">Processadores</a>
+                <a href="{% url 'placamae-list' %}">Placas-mãe</a>
+                <a href="{% url 'memoriam-list' %}">Memórias RAM</a>
+                <a href="{% url 'placavideo-list' %}">Placas de vídeo</a>
+                <a href="{% url 'armazenamento-list' %}">Armazenamento</a>
+                <a href="{% url 'fonte-list' %}">Fontes</a>
             </nav>
         </div>
     </header>
@@ -29,9 +34,38 @@
         {% block content %}
         <section class="card">
             <h2>Simulador de Montagem</h2>
-            <p>
-                Use o menu para cadastrar e gerenciar os fabricantes de componentes.
-            </p>
+            <p>Gerencie os componentes em um único painel.</p>
+
+            <div class="home-grid">
+                <a class="tile" href="{% url 'fabricante-list' %}">
+                    <strong>Fabricantes</strong>
+                    <span>Cadastro base de marcas</span>
+                </a>
+                <a class="tile" href="{% url 'processador-list' %}">
+                    <strong>Processadores</strong>
+                    <span>CPUs, socket, núcleos e preço</span>
+                </a>
+                <a class="tile" href="{% url 'placamae-list' %}">
+                    <strong>Placas-mãe</strong>
+                    <span>Chipset, RAM e conectividade</span>
+                </a>
+                <a class="tile" href="{% url 'memoriam-list' %}">
+                    <strong>Memórias RAM</strong>
+                    <span>Tipo, frequência e capacidade</span>
+                </a>
+                <a class="tile" href="{% url 'placavideo-list' %}">
+                    <strong>Placas de vídeo</strong>
+                    <span>GPU, VRAM e consumo</span>
+                </a>
+                <a class="tile" href="{% url 'armazenamento-list' %}">
+                    <strong>Armazenamento</strong>
+                    <span>SSD/HDD, interface e velocidade</span>
+                </a>
+                <a class="tile" href="{% url 'fonte-list' %}">
+                    <strong>Fontes</strong>
+                    <span>Potência e certificação</span>
+                </a>
+            </div>
         </section>
         {% endblock %}
     </main>

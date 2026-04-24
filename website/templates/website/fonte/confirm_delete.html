@@ -1,0 +1,16 @@
+{% extends "website/model.html" %}
+
+{% block title %}Excluir Fonte{% endblock %}
+
+{% block content %}
+<section class="card small">
+    <h2>Excluir Fonte</h2>
+    <p>Tem certeza que deseja excluir <strong>{{ object.nome }}</strong>?</p>
+
+    <form method="post" class="actions">
+        {% csrf_token %}
+        <button class="btn danger" type="submit">Sim, excluir</button>
+        <a class="btn btn-secondary" href="{% url 'fonte-list' %}">Cancelar</a>
+    </form>
+</section>
+{% endblock %}

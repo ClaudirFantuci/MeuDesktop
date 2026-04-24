@@ -1,0 +1,23 @@
+{% extends "website/model.html" %}
+
+{% block title %}Detalhes do Armazenamento{% endblock %}
+
+{% block content %}
+<section class="card small">
+    <h2>Detalhes do Armazenamento</h2>
+
+    <div class="detail-row"><strong>Nome:</strong> {{ object.nome }}</div>
+    <div class="detail-row"><strong>Fabricante:</strong> {{ object.fabricante }}</div>
+    <div class="detail-row"><strong>Tipo:</strong> {{ object.get_tipo_display }}</div>
+    <div class="detail-row"><strong>Interface:</strong> {{ object.get_interface_display }}</div>
+    <div class="detail-row"><strong>Capacidade:</strong> {{ object.capacidade_gb }} GB</div>
+    <div class="detail-row"><strong>Leitura/Escrita:</strong> {{ object.velocidade_leitura }} / {{ object.velocidade_escrita }} MB/s</div>
+    <div class="detail-row"><strong>Preço:</strong> R$ {{ object.preco }}</div>
+    <div class="detail-row"><strong>Descrição:</strong> {{ object.descricao|default:"-" }}</div>
+
+    <div class="actions">
+        <a class="btn" href="{% url 'armazenamento-update' object.pk %}">Editar</a>
+        <a class="btn btn-secondary" href="{% url 'armazenamento-list' %}">Voltar</a>
+    </div>
+</section>
+{% endblock %}
