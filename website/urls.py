@@ -7,6 +7,7 @@ from .views import (
     ArmazenamentoUpdate,
     IndexView,
     ContatoView,
+    SobreView,
     FabricanteCreate,
     FabricanteDelete,
     FabricanteDetail,
@@ -41,6 +42,7 @@ from .views import (
 urlpatterns = [
     path("", IndexView.as_view(), name="index"),
     path("contato/", ContatoView.as_view(), name="contato"),
+    path("sobre/", SobreView.as_view(), name="sobre"),
 
     path("cadastrar/fabricante/", FabricanteCreate.as_view(), name="fabricante-create"),
     path("atualizar/fabricante/<int:pk>/", FabricanteUpdate.as_view(), name="fabricante-update"),

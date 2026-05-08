@@ -2,42 +2,91 @@
 
 {% block title %}Placas-mãe{% endblock %}
 
-{% block content %}
-<section class="card list-card">
-    <div class="section-header">
-        <h2>Placas-mãe</h2>
-        <a class="btn" href="{% url 'placamae-create' %}">Nova</a>
-    </div>
+{% block breadcrumb %}
+<li class="breadcrumb-item active">Placas-mãe</li>
+{% endblock breadcrumb %}
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Nome</th>
-                <th>Fabricante</th>
-                <th>Socket</th>
-                <th>Chipset</th>
-                <th>Preço</th>
-                <th class="acoes">Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in placas_mae %}
-            <tr>
-                <td>{{ item.nome }}</td>
-                <td>{{ item.fabricante }}</td>
-                <td>{{ item.get_socket_display }}</td>
-                <td>{{ item.chipset }}</td>
-                <td>R$ {{ item.preco }}</td>
-                <td class="acoes">
-                    <a class="btn-action btn-view" href="{% url 'placamae-detail' item.pk %}"><i class="fa-solid fa-eye"></i> Ver</a>
-                    <a class="btn-action btn-edit" href="{% url 'placamae-update' item.pk %}"><i class="fa-solid fa-pen-to-square"></i> Editar</a>
-                    <a class="btn-action btn-delete" href="{% url 'placamae-delete' item.pk %}"><i class="fa-solid fa-trash"></i> Excluir</a>
-                </td>
-            </tr>
-            {% empty %}
-            <tr><td colspan="6">Nenhuma placa-mãe cadastrada.</td></tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</section>
-{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="section-title mb-0">Placas-mãe</h2>
+    <a href="{% url 'placamae-create' %}" class="btn btn-primary d-flex align-items-center gap-2">
+        <i class="bi bi-plus-lg"></i> Nova
+    </a>
+</div>
+
+{% with total=placas_mae|length %}
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="kpi-card shadow-sm">
+            <div class="kpi-label">Total geral</div>
+            <div class="kpi-value">{{ total }}</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="kpi-card shadow-sm">
+            <div class="kpi-label">Cadastros</div>
+            <div class="kpi-value">{{ total }}</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="kpi-card shadow-sm text-accent">
+            <div class="kpi-label">Disponíveis</div>
+            <div class="kpi-value text-accent">{{ total }}</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="kpi-card shadow-sm">
+            <div class="kpi-label">Atualizações</div>
+            <div class="kpi-value">—</div>
+        </div>
+    </div>
+</div>
+{% endwith %}
+
+<div class="card shadow-sm">
+    <div class="card-body p-4 bg-white">
+        <table class="table table-arena mb-0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Fabricante</th>
+                    <th>Socket</th>
+                    <th>Chipset</th>
+                    <th>Preço</th>
+                    <th class="text-center">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in placas_mae %}
+                <tr>
+                    <td>{{ item.pk }}</td>
+                    <td>{{ item.nome }}</td>
+                    <td>{{ item.fabricante }}</td>
+                    <td>{{ item.get_socket_display }}</td>
+                    <td>{{ item.chipset }}</td>
+                    <td>R$ {{ item.preco }}</td>
+                    <td class="text-center">
+                        <div class="dropdown">
+                            <button class="btn btn-link btn-sm text-muted p-0" data-bs-toggle="dropdown">
+                                <i class="bi bi-three-dots-vertical"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="{% url 'placamae-detail' item.pk %}"><i class="bi bi-eye me-2"></i>Ver</a></li>
+                                <li><a class="dropdown-item" href="{% url 'placamae-update' item.pk %}"><i class="bi bi-pencil me-2"></i>Editar</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item text-danger" href="{% url 'placamae-delete' item.pk %}"><i class="bi bi-trash me-2"></i>Excluir</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" class="text-center py-4 text-muted">Nenhuma placa-mãe cadastrada.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock content %}

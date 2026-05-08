@@ -1,0 +1,79 @@
+@startuml Diagrama_CasoDeUso_Montagem_PC
+
+!theme plain
+skinparam actorStyle awesome
+skinparam usecaseFontSize 13
+skinparam usecaseBackgroundColor #E8EAF6
+skinparam usecaseBorderColor #3949AB
+skinparam actorBackgroundColor #FFFFFF
+skinparam actorBorderColor #1565C0
+skinparam actorFontSize 13
+skinparam arrowThickness 1.5
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+
+title Sistema de Simulação de Montagem de Computador\nDiagrama de Casos de Uso
+
+' ============================================================
+' ATORES
+' ============================================================
+
+left to right direction
+
+actor "Usuário" as Usuario
+actor "Administrador" as Admin
+
+' ============================================================
+' SISTEMA
+' ============================================================
+
+rectangle "Sistema de Montagem de PC" {
+
+    package "Funcionalidades do Usuário" #E8F5E9 {
+        usecase "Fazer Login" as UC01
+        usecase "Criar Montagem" as UC02
+        usecase "Adicionar Componente" as UC03
+        usecase "Remover Componente" as UC04
+        usecase "Verificar Compatibilidade" as UC05
+        usecase "Salvar Montagem" as UC06
+        usecase "Finalizar Montagem" as UC07
+        usecase "Visualizar Minhas Montagens" as UC08
+        usecase "Excluir Montagem" as UC09
+    }
+
+    package "Funcionalidades do Administrador" #FFF9C4 {
+        usecase "Gerenciar Componentes\n(CRUD)" as UC10
+        usecase "Gerenciar Usuários" as UC11
+    }
+
+}
+
+' ============================================================
+' ASSOCIAÇÕES — USUÁRIO
+' ============================================================
+
+Usuario --> UC01
+Usuario --> UC02
+Usuario --> UC03
+Usuario --> UC04
+Usuario --> UC06
+Usuario --> UC07
+Usuario --> UC08
+Usuario --> UC09
+
+' ============================================================
+' ASSOCIAÇÕES — ADMINISTRADOR
+' ============================================================
+
+Admin --> UC01
+Admin --> UC10
+Admin --> UC11
+
+' ============================================================
+' INCLUDE
+' ============================================================
+
+UC03 ..> UC05 : <<include>>
+UC07 ..> UC05 : <<include>>
+
+@enduml

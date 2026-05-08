@@ -2,24 +2,83 @@
 
 {% block title %}Detalhes do Processador{% endblock %}
 
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{% url 'processador-list' %}">Processadores</a></li>
+<li class="breadcrumb-item active" aria-current="page">Detalhes</li>
+{% endblock breadcrumb %}
+
 {% block content %}
-<section class="card small">
-    <h2>Detalhes do Processador</h2>
+<div class="row justify-content-center">
+    <div class="col-md-10 col-lg-8">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-primary text-white py-3">
+                <h4 class="mb-0 d-flex align-items-center"><i class="bi bi-cpu me-2 fs-4"></i>Detalhes do Processador</h4>
+            </div>
+            <div class="card-body p-4">
+                {% if object.imagem %}
+                    <div class="text-center mb-4">
+                        <img src="{{ object.imagem.url }}" alt="Imagem do processador {{ object.nome }}" class="img-fluid rounded" style="max-height: 260px;">
+                    </div>
+                {% endif %}
 
-    <div class="detail-row"><strong>Nome:</strong> {{ object.nome }}</div>
-    <div class="detail-row"><strong>Fabricante:</strong> {{ object.fabricante }}</div>
-    <div class="detail-row"><strong>Socket:</strong> {{ object.get_socket_display }}</div>
-    <div class="detail-row"><strong>Núcleos/Threads:</strong> {{ object.cores }}/{{ object.threads }}</div>
-    <div class="detail-row"><strong>Frequência base/turbo:</strong> {{ object.frequencia_base }} / {{ object.frequencia_turbo }} GHz</div>
-    <div class="detail-row"><strong>TDP:</strong> {{ object.tdp }} W</div>
-    <div class="detail-row"><strong>Vídeo integrado:</strong> {% if object.tem_video_integrado %}Sim{% else %}Não{% endif %}</div>
-    <div class="detail-row"><strong>Geração:</strong> {{ object.geracao|default:"-" }}</div>
-    <div class="detail-row"><strong>Preço:</strong> R$ {{ object.preco }}</div>
-    <div class="detail-row"><strong>Descrição:</strong> {{ object.descricao|default:"-" }}</div>
-
-    <div class="actions">
-        <a class="btn" href="{% url 'processador-update' object.pk %}">Editar</a>
-        <a class="btn btn-secondary" href="{% url 'processador-list' %}">Voltar</a>
+                <p class="mb-3 fs-5"><strong>Nome:</strong> {{ object.nome }}</p>
+                <hr class="text-muted">
+                <div class="row g-3">
+                    <div class="col-sm-6">
+                        <p class="mb-1 text-muted small fw-bold">Fabricante</p>
+                        <p class="mb-0">{{ object.fabricante }}</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="mb-1 text-muted small fw-bold">Socket</p>
+                        <p class="mb-0">{{ object.get_socket_display }}</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="mb-1 text-muted small fw-bold">Núcleos / Threads</p>
+                        <p class="mb-0">{{ object.cores }} / {{ object.threads }}</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="mb-1 text-muted small fw-bold">Frequência base / turbo</p>
+                        <p class="mb-0">{{ object.frequencia_base }} / {{ object.frequencia_turbo }} GHz</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="mb-1 text-muted small fw-bold">TDP</p>
+                        <p class="mb-0">{{ object.tdp }} W</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="mb-1 text-muted small fw-bold">Vídeo integrado</p>
+                        <p class="mb-0">{{ object.tem_video_integrado|yesno:"Sim,Não" }}</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="mb-1 text-muted small fw-bold">Geração</p>
+                        <p class="mb-0">{{ object.geracao|default:"-" }}</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="mb-1 text-muted small fw-bold">Preço</p>
+                        <p class="mb-0">R$ {{ object.preco }}</p>
+                    </div>
+                    <div class="col-12">
+                        <p class="mb-1 text-muted small fw-bold">Descrição</p>
+                        <p class="mb-0">{{ object.descricao|default:"-" }}</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="mb-1 text-muted small fw-bold">Disponível</p>
+                        <p class="mb-0">
+                            <span class="badge {% if object.disponivel %}bg-success{% else %}bg-secondary{% endif %}">
+                                {{ object.disponivel|yesno:"Sim,Não" }}
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer bg-light p-3 d-flex justify-content-between">
+                <a href="{% url 'processador-update' object.pk %}" class="btn btn-primary">
+                    <i class="bi bi-pencil-square me-2"></i>Editar
+                </a>
+                <a href="{% url 'processador-list' %}" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left me-2"></i>Voltar
+                </a>
+            </div>
+        </div>
     </div>
-</section>
-{% endblock %}
+</div>
+{% endblock content %}

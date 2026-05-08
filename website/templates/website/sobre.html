@@ -1,0 +1,102 @@
+{% extends "website/model.html" %}
+{% load static %}
+
+{% block title %}Meu Desktop - Sobre{% endblock %}
+
+{% block content %}
+<section class="card">
+    <h2>Sobre o Meu Desktop</h2>
+    <p>
+        O Meu Desktop é um sistema para simular a montagem de computadores e ajudar você a tomar decisões com segurança.
+        À medida que a montagem avança, o sistema filtra automaticamente os componentes compatíveis.
+    </p>
+    <p>
+        Exemplo: ao escolher o processador, apenas placas-mãe com o socket correto aparecem na etapa seguinte.
+        Assim, você evita combinações incompatíveis e entende melhor as especificações antes de comprar.
+    </p>
+</section>
+
+<section class="card" style="margin-top: 20px;">
+    <h3>Como funciona</h3>
+    <div class="home-grid">
+        <div class="tile">
+            <strong>1. Escolha o processador</strong>
+            <span>Defina a base da sua configuração.</span>
+        </div>
+        <div class="tile">
+            <strong>2. Selecione a placa-mãe compatível</strong>
+            <span>O sistema filtra por socket e chipset.</span>
+        </div>
+        <div class="tile">
+            <strong>3. Complete com RAM, GPU e armazenamento</strong>
+            <span>Veja apenas opções compatíveis.</span>
+        </div>
+        <div class="tile">
+            <strong>4. Valide o conjunto final</strong>
+            <span>Monte com confiança antes de comprar.</span>
+        </div>
+    </div>
+</section>
+
+<section class="card" style="margin-top: 20px;">
+    <h3>Recursos do sistema</h3>
+    <div class="home-grid">
+        <div class="tile">
+            <strong>Catálogo completo</strong>
+            <span>Cadastro, listagem e detalhamento de componentes.</span>
+        </div>
+        <div class="tile">
+            <strong>Compatibilidade inteligente</strong>
+            <span>Filtragem automática por especificações.</span>
+        </div>
+        <div class="tile">
+            <strong>Comparação clara</strong>
+            <span>Detalhes técnicos organizados.</span>
+        </div>
+        <div class="tile">
+            <strong>Decisão segura</strong>
+            <span>Planeje a compra com confiança.</span>
+        </div>
+    </div>
+</section>
+
+<section class="card" style="margin-top: 20px;">
+    <h3>Diagramas do projeto (UML)</h3>
+    <p>
+        Abaixo estão os diagramas que orientam a estrutura do sistema e o fluxo de uso. Eles servem como base
+        para a modelagem dos componentes, das regras de compatibilidade e das funcionalidades principais.
+    </p>
+    <div class="home-grid">
+        <div class="tile">
+            <strong>Diagrama de Caso de Uso</strong>
+            <span>Mostra as interações do usuário com as funcionalidades do sistema.</span>
+            <img
+                src="{% static 'jLRDJjj04Bv7oZjCqqFR0mYJ7qX54SPngaX0K4nwGaABlIGZxDreTqrQAgJsr1Te7w3geG-ID-cJTDVOrE2bgeIxf_NCDxCptpUxyfvKHAWqYM60P2P8Giuy8lc0JYK_E-HCaHbDpewzPgFPUARcDA6mY0coPaDU8biG7G4aL5m4waDCWIofv0ajUrD9GoBfKESAy9g2qxPuzqbuEHCyPP.png' %}"
+                alt="Diagrama de caso de uso do sistema"
+                style="width: 100%; border-radius: 10px; margin-top: 10px;"
+            />
+        </div>
+        <div class="tile">
+            <strong>Diagrama de Classes</strong>
+            <span>Define as entidades e relacionamentos entre componentes.</span>
+            <img
+                src="{% static 'nLZTJkD65Bv7oZjCqui24hl0BbkAjcXDua2q-K5ne5LLoPhOasIAxV7EZ1TAnLKVfHTz45wiP_oN6STXio9boONjETyvC_xEh_aW9EOo2GFKfdZ6SOZTLe258CBjiqZY6GdTorPZgx7rdPoJaA0um3HgR8aR6iKOyCXJS4jAJYU995sFHGwz9sX_2TC1UwdeuEsIx8.png' %}"
+                alt="Diagrama de classes do sistema"
+                style="width: 100%; border-radius: 10px; margin-top: 10px;"
+            />
+        </div>
+    </div>
+</section>
+
+<section class="card" style="margin-top: 20px;">
+    <h3>Para quem é</h3>
+    <p>
+        Ideal para estudantes, entusiastas e qualquer pessoa que queira entender melhor componentes de hardware,
+        simular combinações e montar um computador sem erros de compatibilidade.
+    </p>
+    <div class="actions">
+        <a class="btn" href="{% url 'index' %}">Explorar catálogo</a>
+        <a class="btn btn-secondary" href="{% url 'contato' %}">Falar conosco</a>
+    </div>
+</section>
+{% endblock %}

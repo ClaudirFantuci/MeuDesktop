@@ -2,22 +2,79 @@
 
 {% block title %}Detalhes do Armazenamento{% endblock %}
 
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{% url 'armazenamento-list' %}">Armazenamento</a></li>
+<li class="breadcrumb-item active" aria-current="page">Detalhes</li>
+{% endblock breadcrumb %}
+
 {% block content %}
-<section class="card small">
-    <h2>Detalhes do Armazenamento</h2>
+<div class="row justify-content-center">
+    <div class="col-md-10 col-lg-8">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-primary text-white py-3">
+                <h4 class="mb-0 d-flex align-items-center"><i class="bi bi-device-ssd me-2 fs-4"></i>Detalhes do Armazenamento</h4>
+            </div>
+            <div class="card-body p-4">
+                {% if object.imagem %}
+                    <div class="text-center mb-4">
+                        <img src="{{ object.imagem.url }}" alt="Imagem do armazenamento {{ object.nome }}" class="img-fluid rounded" style="max-height: 260px;">
+                    </div>
+                {% endif %}
 
-    <div class="detail-row"><strong>Nome:</strong> {{ object.nome }}</div>
-    <div class="detail-row"><strong>Fabricante:</strong> {{ object.fabricante }}</div>
-    <div class="detail-row"><strong>Tipo:</strong> {{ object.get_tipo_display }}</div>
-    <div class="detail-row"><strong>Interface:</strong> {{ object.get_interface_display }}</div>
-    <div class="detail-row"><strong>Capacidade:</strong> {{ object.capacidade_gb }} GB</div>
-    <div class="detail-row"><strong>Leitura/Escrita:</strong> {{ object.velocidade_leitura }} / {{ object.velocidade_escrita }} MB/s</div>
-    <div class="detail-row"><strong>Preço:</strong> R$ {{ object.preco }}</div>
-    <div class="detail-row"><strong>Descrição:</strong> {{ object.descricao|default:"-" }}</div>
-
-    <div class="actions">
-        <a class="btn" href="{% url 'armazenamento-update' object.pk %}">Editar</a>
-        <a class="btn btn-secondary" href="{% url 'armazenamento-list' %}">Voltar</a>
+                <p class="mb-3 fs-5"><strong>Nome:</strong> {{ object.nome }}</p>
+                <hr class="text-muted">
+                <div class="row g-3">
+                    <div class="col-sm-6">
+                        <p class="mb-1 text-muted small fw-bold">Fabricante</p>
+                        <p class="mb-0">{{ object.fabricante }}</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="mb-1 text-muted small fw-bold">Tipo</p>
+                        <p class="mb-0">{{ object.get_tipo_display }}</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="mb-1 text-muted small fw-bold">Interface</p>
+                        <p class="mb-0">{{ object.get_interface_display }}</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="mb-1 text-muted small fw-bold">Capacidade</p>
+                        <p class="mb-0">{{ object.capacidade_gb }} GB</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="mb-1 text-muted small fw-bold">Leitura</p>
+                        <p class="mb-0">{{ object.velocidade_leitura }} MB/s</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="mb-1 text-muted small fw-bold">Escrita</p>
+                        <p class="mb-0">{{ object.velocidade_escrita }} MB/s</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="mb-1 text-muted small fw-bold">Preço</p>
+                        <p class="mb-0">R$ {{ object.preco }}</p>
+                    </div>
+                    <div class="col-12">
+                        <p class="mb-1 text-muted small fw-bold">Descrição</p>
+                        <p class="mb-0">{{ object.descricao|default:"-" }}</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="mb-1 text-muted small fw-bold">Disponível</p>
+                        <p class="mb-0">
+                            <span class="badge {% if object.disponivel %}bg-success{% else %}bg-secondary{% endif %}">
+                                {{ object.disponivel|yesno:"Sim,Não" }}
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer bg-light p-3 d-flex justify-content-between">
+                <a href="{% url 'armazenamento-update' object.pk %}" class="btn btn-primary">
+                    <i class="bi bi-pencil-square me-2"></i>Editar
+                </a>
+                <a href="{% url 'armazenamento-list' %}" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left me-2"></i>Voltar
+                </a>
+            </div>
+        </div>
     </div>
-</section>
-{% endblock %}
+</div>
+{% endblock content %}

@@ -1,19 +1,48 @@
 {% extends "website/model.html" %}
+{% load crispy_forms_tags %}
 
 {% block title %}{{ titulo }}{% endblock %}
 
+{% block breadcrumb %}
+    <li class="breadcrumb-item active" aria-current="page">{{ titulo }}</li>
+{% endblock breadcrumb %}
+
 {% block content %}
-<section class="card small">
-    <h2>{{ titulo }}</h2>
+<div class="row justify-content-center">
+    <div class="col-md-{{ largura|default:'6' }}">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-primary text-white py-3">
+                <h4 class="mb-0 text-center" style="font-size: 1.5rem;">{{ titulo }}</h4>
+            </div>
+            <div class="card-body p-4">
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ form|crispy }}
 
-    <form method="post" class="form-grid">
-        {% csrf_token %}
-        {{ form.as_p }}
+                    <div class="d-flex gap-2 mt-4">
+                        {% if botao == "Sim, excluir!" %}
+                            <div class="w-100">
+                                <div class="alert alert-danger mb-4 text-center">
+                                    <h5 class="alert-heading"><i class="bi bi-exclamation-triangle me-2"></i>Atenção!</h5>
+                                    <p class="mb-0">Deseja realmente excluir: <strong>{{ object }}</strong>?</p>
+                                </div>
+                                <button type="submit" class="btn btn-danger w-100">
+                                    <i class="bi bi-trash me-2"></i>{{ botao }}
+                                </button>
+                            </div>
+                        {% else %}
+                            <button type="submit" class="btn btn-primary px-4">
+                                <i class="bi bi-check-circle me-2"></i>{{ botao }}
+                            </button>
+                        {% endif %}
 
-        <div class="actions">
-            <button class="btn" type="submit">{{ botao }}</button>
-            <a class="btn btn-secondary" href="{% url 'fonte-list' %}">Cancelar</a>
+                        <a href="#" class="btn btn-outline-secondary px-4" onclick="window.history.back()">
+                            <i class="bi bi-x-circle me-2"></i>Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
         </div>
-    </form>
-</section>
-{% endblock %}
+    </div>
+</div>
+{% endblock content %}

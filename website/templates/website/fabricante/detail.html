@@ -2,23 +2,55 @@
 
 {% block title %}Detalhes do Fabricante{% endblock %}
 
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{% url 'fabricante-list' %}">Fabricantes</a></li>
+<li class="breadcrumb-item active" aria-current="page">Detalhes</li>
+{% endblock breadcrumb %}
+
 {% block content %}
-<section class="card small">
-    <h2>Detalhes do Fabricante</h2>
-
-    <div class="detail-row"><strong>Nome:</strong> {{ object.nome }}</div>
-    <div class="detail-row">
-        <strong>Website:</strong>
-        {% if object.website %}
-        <a href="{{ object.website }}" target="_blank" rel="noopener">{{ object.website }}</a>
-        {% else %}
-        -
-        {% endif %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-7">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-primary text-white py-3">
+                <h4 class="mb-0 d-flex align-items-center"><i class="bi bi-building me-2 fs-4"></i>Detalhes do Fabricante</h4>
+            </div>
+            <div class="card-body p-4">
+                <p class="mb-3 fs-5"><strong>Nome:</strong> {{ object.nome }}</p>
+                <hr class="text-muted">
+                <div class="row g-3">
+                    <div class="col-sm-6">
+                        <p class="mb-1 text-muted small fw-bold">Website</p>
+                        <p class="mb-0">
+                            {% if object.website %}
+                                <a href="{{ object.website }}" target="_blank" rel="noopener">{{ object.website }}</a>
+                            {% else %}
+                                -
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="mb-1 text-muted small fw-bold">Criado em</p>
+                        <p class="mb-0">{{ object.criado_em|date:"d/m/Y H:i" }}</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="mb-1 text-muted small fw-bold">Atualizado em</p>
+                        <p class="mb-0">{{ object.atualizado_em|date:"d/m/Y H:i" }}</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="mb-1 text-muted small fw-bold">Identificador</p>
+                        <p class="mb-0 text-muted font-monospace">#{{ object.pk }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer bg-light p-3 d-flex justify-content-between">
+                <a href="{% url 'fabricante-update' object.pk %}" class="btn btn-primary">
+                    <i class="bi bi-pencil-square me-2"></i>Editar
+                </a>
+                <a href="{% url 'fabricante-list' %}" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left me-2"></i>Voltar
+                </a>
+            </div>
+        </div>
     </div>
-
-    <div class="actions">
-        <a class="btn" href="{% url 'fabricante-update' object.pk %}">Editar</a>
-        <a class="btn btn-secondary" href="{% url 'fabricante-list' %}">Voltar</a>
-    </div>
-</section>
-{% endblock %}
+</div>
+{% endblock content %}

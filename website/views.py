@@ -22,6 +22,10 @@ class ContatoView(TemplateView):
     template_name = "website/contato.html"
 
 
+class SobreView(TemplateView):
+    template_name = "website/sobre.html"
+
+
 class FabricanteCreate(CreateView):
     model = Fabricante
     fields = ["nome", "website"]
