@@ -43,6 +43,9 @@ INSTALLED_APPS = [
     "crispy_bootstrap5",
 
     "website.apps.WebsiteConfig",
+
+    # Ativar o Django Debug Toolbar - Passo 1
+    "debug_toolbar",
 ]
 
 MIDDLEWARE = [
@@ -53,6 +56,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    # Ativar o Django Debug Toolbar - Passo 2
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = "MeuDesktop.urls"
@@ -139,3 +144,19 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# Configurações de login e logout
+# https://docs.djangoproject.com/en/5.2/topics/auth/default/#using-the-views
+
+LOGIN_URL = "login"
+LOGIN_REDIRECT_URL = "index"
+LOGOUT_REDIRECT_URL = "index"
+
+
+# Django Debug Toolbar - Passo 3
+# https://django-debug-toolbar.readthedocs.io/en/latest/installation.html#configuration
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]

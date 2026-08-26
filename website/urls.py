@@ -1,13 +1,13 @@
+from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView
 from django.urls import path
+
 from .views import (
     ArmazenamentoCreate,
     ArmazenamentoDelete,
     ArmazenamentoDetail,
     ArmazenamentoList,
     ArmazenamentoUpdate,
-    IndexView,
     ContatoView,
-    SobreView,
     FabricanteCreate,
     FabricanteDelete,
     FabricanteDetail,
@@ -18,11 +18,18 @@ from .views import (
     FonteDetail,
     FonteList,
     FonteUpdate,
+    IndexView,
     MemoriaRAMCreate,
     MemoriaRAMDelete,
     MemoriaRAMDetail,
     MemoriaRAMList,
     MemoriaRAMUpdate,
+    MontagemCreate,
+    MontagemDelete,
+    MontagemDetail,
+    MontagemFinalizar,
+    MontagemList,
+    MontagemUpdate,
     PlacaDeVideoCreate,
     PlacaDeVideoDelete,
     PlacaDeVideoDetail,
@@ -38,11 +45,26 @@ from .views import (
     ProcessadorDetail,
     ProcessadorList,
     ProcessadorUpdate,
+    SobreView,
 )
+
 urlpatterns = [
     path("", IndexView.as_view(), name="index"),
     path("contato/", ContatoView.as_view(), name="contato"),
     path("sobre/", SobreView.as_view(), name="sobre"),
+
+    # Autenticação: login, logout e alteração de senha reaproveitam o
+    # template de auth/login.html, apenas trocando o título/botão via extra_context
+    path("login/", LoginView.as_view(
+        template_name="website/auth/login.html",
+        extra_context={"titulo": "Entrar", "botao": "Entrar"},
+    ), name="login"),
+    path("logout/", LogoutView.as_view(), name="logout"),
+    path("alterar-senha/", PasswordChangeView.as_view(
+        template_name="website/auth/login.html",
+        extra_context={"titulo": "Alterar minha senha", "botao": "Alterar Senha"},
+        success_url="/",
+    ), name="alterar-senha"),
 
     path("cadastrar/fabricante/", FabricanteCreate.as_view(), name="fabricante-create"),
     path("atualizar/fabricante/<int:pk>/", FabricanteUpdate.as_view(), name="fabricante-update"),
@@ -85,4 +107,11 @@ urlpatterns = [
     path("excluir/fonte/<int:pk>/", FonteDelete.as_view(), name="fonte-delete"),
     path("listar/fonte/", FonteList.as_view(), name="fonte-list"),
     path("detalhar/fonte/<int:pk>/", FonteDetail.as_view(), name="fonte-detail"),
+
+    path("cadastrar/montagem/", MontagemCreate.as_view(), name="montagem-create"),
+    path("atualizar/montagem/<int:pk>/", MontagemUpdate.as_view(), name="montagem-update"),
+    path("excluir/montagem/<int:pk>/", MontagemDelete.as_view(), name="montagem-delete"),
+    path("listar/montagem/", MontagemList.as_view(), name="montagem-list"),
+    path("detalhar/montagem/<int:pk>/", MontagemDetail.as_view(), name="montagem-detail"),
+    path("finalizar/montagem/<int:pk>/", MontagemFinalizar.as_view(), name="montagem-finalizar"),
 ]

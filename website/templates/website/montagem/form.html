@@ -1,0 +1,40 @@
+{% extends "website/model.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ titulo }}{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'montagem-list' %}">Montagens</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{ titulo }}</li>
+{% endblock breadcrumb %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-{{ largura|default:'8' }}">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-primary text-white py-3">
+                <h4 class="mb-0 text-center" style="font-size: 1.5rem;">{{ titulo }}</h4>
+            </div>
+            <div class="card-body p-4">
+                <p class="text-muted">
+                    Escolha os componentes da sua montagem. Você pode deixar campos em branco e
+                    completá-los depois &mdash; a compatibilidade é verificada somente ao finalizar.
+                </p>
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+
+                    <div class="d-flex gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary px-4">
+                            <i class="bi bi-check-circle me-2"></i>{{ botao }}
+                        </button>
+                        <a href="#" class="btn btn-outline-secondary px-4" onclick="window.history.back()">
+                            <i class="bi bi-x-circle me-2"></i>Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 # Create your models here.
@@ -199,3 +200,43 @@ class Fonte(models.Model):
 		ordering = ["nome"]
 		verbose_name = "Fonte"
 		verbose_name_plural = "Fontes"
+
+
+class Montagem(models.Model):
+	usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="montagens")
+	nome = models.CharField(max_length=120)
+
+	processador = models.ForeignKey(Processador, on_delete=models.SET_NULL, blank=True, null=True, related_name="montagens")
+	placa_mae = models.ForeignKey(PlacaMae, on_delete=models.SET_NULL, blank=True, null=True, related_name="montagens")
+	memoria_ram = models.ForeignKey(MemoriaRAM, on_delete=models.SET_NULL, blank=True, null=True, related_name="montagens")
+	placa_de_video = models.ForeignKey(PlacaDeVideo, on_delete=models.SET_NULL, blank=True, null=True, related_name="montagens")
+	armazenamento = models.ForeignKey(Armazenamento, on_delete=models.SET_NULL, blank=True, null=True, related_name="montagens")
+	fonte = models.ForeignKey(Fonte, on_delete=models.SET_NULL, blank=True, null=True, related_name="montagens")
+
+	data_criacao = models.DateTimeField(auto_now_add=True)
+	data_atualizacao = models.DateTimeField(auto_now=True)
+	finalizada = models.BooleanField(default=False)
+
+	def __str__(self):
+		return self.nome
+
+	class Meta:
+		ordering = ["-data_atualizacao"]
+		verbose_name = "Montagem"
+		verbose_name_plural = "Montagens"
+
+
+class HistoricoMontagem(models.Model):
+	montagem = models.ForeignKey(Montagem, on_delete=models.CASCADE, related_name="historico")
+	acao = models.CharField(max_length=20)
+	componente_tipo = models.CharField(max_length=40)
+	componente_nome = models.CharField(max_length=120, blank=True)
+	data = models.DateTimeField(auto_now_add=True)
+
+	def __str__(self):
+		return f"{self.acao} - {self.componente_tipo}"
+
+	class Meta:
+		ordering = ["-data"]
+		verbose_name = "Histórico de Montagem"
+		verbose_name_plural = "Históricos de Montagem"

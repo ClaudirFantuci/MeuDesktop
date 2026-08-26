@@ -1,0 +1,114 @@
+{% extends "website/model.html" %}
+
+{% block title %}{{ object.nome }}{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{% url 'montagem-list' %}">Montagens</a></li>
+<li class="breadcrumb-item active" aria-current="page">{{ object.nome }}</li>
+{% endblock breadcrumb %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10 col-lg-9">
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-header bg-primary text-white py-3 d-flex justify-content-between align-items-center">
+                <h4 class="mb-0 d-flex align-items-center"><i class="bi bi-pc-display me-2 fs-4"></i>{{ object.nome }}</h4>
+                {% if object.finalizada %}
+                    <span class="badge-s s-finalizada"><i class="bi bi-check-circle"></i>Finalizada</span>
+                {% else %}
+                    <span class="badge-s" style="background: rgba(255,255,255,.18); color: #fff;"><i class="bi bi-hourglass-split"></i>Em andamento</span>
+                {% endif %}
+            </div>
+            <div class="card-body p-4">
+                <div class="row g-3">
+                    <div class="col-sm-6">
+                        <p class="mb-1 text-muted small fw-bold">Processador</p>
+                        <p class="mb-0">{{ object.processador|default:"Não selecionado" }}</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="mb-1 text-muted small fw-bold">Placa-mãe</p>
+                        <p class="mb-0">{{ object.placa_mae|default:"Não selecionada" }}</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="mb-1 text-muted small fw-bold">Memória RAM</p>
+                        <p class="mb-0">{{ object.memoria_ram|default:"Não selecionada" }}</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="mb-1 text-muted small fw-bold">Placa de vídeo</p>
+                        <p class="mb-0">{{ object.placa_de_video|default:"Não selecionada" }}</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="mb-1 text-muted small fw-bold">Armazenamento</p>
+                        <p class="mb-0">{{ object.armazenamento|default:"Não selecionado" }}</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="mb-1 text-muted small fw-bold">Fonte</p>
+                        <p class="mb-0">{{ object.fonte|default:"Não selecionada" }}</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="mb-1 text-muted small fw-bold">Criada em</p>
+                        <p class="mb-0">{{ object.data_criacao|date:"d/m/Y H:i" }}</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="mb-1 text-muted small fw-bold">Última atualização</p>
+                        <p class="mb-0">{{ object.data_atualizacao|date:"d/m/Y H:i" }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer bg-light p-3 d-flex justify-content-between flex-wrap gap-2">
+                <div class="d-flex gap-2">
+                    {% if not object.finalizada %}
+                        <a href="{% url 'montagem-update' object.pk %}" class="btn btn-primary">
+                            <i class="bi bi-pencil-square me-2"></i>Editar
+                        </a>
+                        <form method="POST" action="{% url 'montagem-finalizar' object.pk %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-check2-circle me-2"></i>Verificar e finalizar
+                            </button>
+                        </form>
+                    {% endif %}
+                    <a href="{% url 'montagem-delete' object.pk %}" class="btn btn-outline-danger">
+                        <i class="bi bi-trash me-2"></i>Excluir
+                    </a>
+                </div>
+                <a href="{% url 'montagem-list' %}" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left me-2"></i>Voltar
+                </a>
+            </div>
+        </div>
+
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white py-3">
+                <h5 class="mb-0"><i class="bi bi-clock-history me-2"></i>Histórico da montagem</h5>
+            </div>
+            <div class="card-body p-0">
+                <table class="table table-arena mb-0">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Ação</th>
+                            <th>Componente</th>
+                            <th>Descrição</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for evento in object.historico.all %}
+                        <tr>
+                            <td>{{ evento.data|date:"d/m/Y H:i" }}</td>
+                            <td>{{ evento.acao }}</td>
+                            <td>{{ evento.componente_tipo }}</td>
+                            <td>{{ evento.componente_nome|default:"-" }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4" class="text-center py-4 text-muted">Nenhum evento registrado ainda.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

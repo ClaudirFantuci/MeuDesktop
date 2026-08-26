@@ -1,11 +1,16 @@
 {% load static %}
+{% load group_tags %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Meu Desktop{% endblock %}</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500;600;700&family=Saira+Stencil:wght@400;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
@@ -16,70 +21,275 @@
             <a class="brand" href="{% url 'index' %}">Meu Desktop</a>
 
             <button class="menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu-principal">
-                ☰
+                <i class="bi bi-list"></i>
             </button>
 
             <nav id="menu-principal" class="menu-links">
-                <a href="{% url 'index' %}">Início</a>
-                <a href="{% url 'sobre' %}">Sobre</a>
-                <a href="{% url 'fabricante-list' %}">Fabricantes</a>
-                <a href="{% url 'processador-list' %}">Processadores</a>
-                <a href="{% url 'placamae-list' %}">Placas-mãe</a>
-                <a href="{% url 'memoriam-list' %}">Memórias RAM</a>
-                <a href="{% url 'placavideo-list' %}">Placas de vídeo</a>
-                <a href="{% url 'armazenamento-list' %}">Armazenamento</a>
-                <a href="{% url 'fonte-list' %}">Fontes</a>
+                <a href="{% url 'index' %}"><i class="bi bi-house me-1"></i>Início</a>
+                <a href="{% url 'sobre' %}"><i class="bi bi-info-circle me-1"></i>Sobre</a>
+                <a href="{% url 'contato' %}"><i class="bi bi-envelope me-1"></i>Contato</a>
+
+                <div class="dropdown">
+                    <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="padding:.5rem .8rem; border-radius:.5rem; color: var(--clr-text); font-weight:500; font-size:.95rem;">
+                        <i class="bi bi-cpu me-1"></i>Catálogo
+                    </a>
+                    <ul class="dropdown-menu shadow">
+                        <li><a class="dropdown-item" href="{% url 'fabricante-list' %}"><i class="bi bi-award me-2"></i>Fabricantes</a></li>
+                        <li><a class="dropdown-item" href="{% url 'processador-list' %}"><i class="bi bi-cpu me-2"></i>Processadores</a></li>
+                        <li><a class="dropdown-item" href="{% url 'placamae-list' %}"><i class="bi bi-motherboard me-2"></i>Placas-mãe</a></li>
+                        <li><a class="dropdown-item" href="{% url 'memoriam-list' %}"><i class="bi bi-memory me-2"></i>Memórias RAM</a></li>
+                        <li><a class="dropdown-item" href="{% url 'placavideo-list' %}"><i class="bi bi-gpu-card me-2"></i>Placas de vídeo</a></li>
+                        <li><a class="dropdown-item" href="{% url 'armazenamento-list' %}"><i class="bi bi-device-hdd me-2"></i>Armazenamento</a></li>
+                        <li><a class="dropdown-item" href="{% url 'fonte-list' %}"><i class="bi bi-plug me-2"></i>Fontes</a></li>
+                    </ul>
+                </div>
+
+                {% if request.user|pertence:"Administrador" %}
+                <div class="dropdown">
+                    <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="padding:.5rem .8rem; border-radius:.5rem; color: var(--clr-text); font-weight:500; font-size:.95rem;">
+                        <i class="bi bi-plus-circle me-1"></i>Cadastrar
+                    </a>
+                    <ul class="dropdown-menu shadow">
+                        <li><a class="dropdown-item" href="{% url 'fabricante-create' %}"><i class="bi bi-plus-circle me-2"></i>Fabricante</a></li>
+                        <li><a class="dropdown-item" href="{% url 'processador-create' %}"><i class="bi bi-plus-circle me-2"></i>Processador</a></li>
+                        <li><a class="dropdown-item" href="{% url 'placamae-create' %}"><i class="bi bi-plus-circle me-2"></i>Placa-mãe</a></li>
+                        <li><a class="dropdown-item" href="{% url 'memoriam-create' %}"><i class="bi bi-plus-circle me-2"></i>Memória RAM</a></li>
+                        <li><a class="dropdown-item" href="{% url 'placavideo-create' %}"><i class="bi bi-plus-circle me-2"></i>Placa de vídeo</a></li>
+                        <li><a class="dropdown-item" href="{% url 'armazenamento-create' %}"><i class="bi bi-plus-circle me-2"></i>Armazenamento</a></li>
+                        <li><a class="dropdown-item" href="{% url 'fonte-create' %}"><i class="bi bi-plus-circle me-2"></i>Fonte</a></li>
+                    </ul>
+                </div>
+                {% endif %}
+
+                {% if request.user.is_authenticated %}
+                    <a href="{% url 'montagem-list' %}"><i class="bi bi-pc-display me-1"></i>Minhas Montagens</a>
+
+                    <div class="dropdown">
+                        <button class="user-pill border-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span class="avatar">{{ request.user.username|slice:":1"|upper }}</span>
+                            <span class="d-none d-md-inline">{{ request.user.username }}</span>
+                            <i class="bi bi-chevron-down" style="font-size:.65rem; opacity:.6;"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end shadow">
+                            <li><a class="dropdown-item" href="{% url 'montagem-list' %}"><i class="bi bi-pc-display me-2"></i>Minhas Montagens</a></li>
+                            <li><a class="dropdown-item" href="{% url 'alterar-senha' %}"><i class="bi bi-key me-2"></i>Alterar senha</a></li>
+                            {% if request.user|pertence:"Administrador" %}
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="/admin/"><i class="bi bi-shield-lock me-2"></i>Administração</a></li>
+                            {% endif %}
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form method="POST" action="{% url 'logout' %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="dropdown-item text-danger">
+                                        <i class="bi bi-box-arrow-right me-2"></i>Sair
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                {% else %}
+                    <a class="btn-menu" href="{% url 'login' %}"><i class="bi bi-box-arrow-in-right me-1"></i>Entrar</a>
+                {% endif %}
             </nav>
         </div>
     </header>
 
     <div class="container mt-3">
+        {% block breadcrumb_wrapper %}
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'index' %}"><i class="bi bi-house"></i></a></li>
                 {% block breadcrumb %}{% endblock %}
             </ol>
         </nav>
+        {% endblock %}
+
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == "success" %}
+                    {% with icon="bi-check-circle-fill" %}
+                    <div class="alert alert-success alert-dismissible fade show d-flex align-items-center gap-2" role="alert">
+                        <i class="bi {{ icon }}"></i><div>{{ message }}</div>
+                        <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Fechar"></button>
+                    </div>
+                    {% endwith %}
+                {% elif message.tags == "error" %}
+                    <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center gap-2" role="alert">
+                        <i class="bi bi-x-circle-fill"></i><div>{{ message }}</div>
+                        <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Fechar"></button>
+                    </div>
+                {% elif message.tags == "warning" %}
+                    <div class="alert alert-warning alert-dismissible fade show d-flex align-items-center gap-2" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill"></i><div>{{ message }}</div>
+                        <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Fechar"></button>
+                    </div>
+                {% else %}
+                    <div class="alert alert-info alert-dismissible fade show d-flex align-items-center gap-2" role="alert">
+                        <i class="bi bi-info-circle-fill"></i><div>{{ message }}</div>
+                        <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Fechar"></button>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
     </div>
 
     <main class="container page-content">
         {% block content %}
         <section class="card">
-            <h2>Simulador de Montagem</h2>
-            <p>Gerencie os componentes em um único painel.</p>
+            <h2 class="section-title mb-2">Simulador de Montagem</h2>
+            <p class="text-muted mb-0">Gerencie os componentes em um único painel e monte o seu computador passo a passo.</p>
 
             <div class="home-grid">
                 <a class="tile" href="{% url 'fabricante-list' %}">
-                    <strong>Fabricantes</strong>
-                    <span>Cadastro base de marcas</span>
+                    <span class="tile-icon"><i class="bi bi-award"></i></span>
+                    <span class="tile-text">
+                        <strong>Fabricantes</strong>
+                        <span>Cadastro base de marcas</span>
+                    </span>
                 </a>
                 <a class="tile" href="{% url 'processador-list' %}">
-                    <strong>Processadores</strong>
-                    <span>CPUs, socket, núcleos e preço</span>
+                    <span class="tile-icon"><i class="bi bi-cpu"></i></span>
+                    <span class="tile-text">
+                        <strong>Processadores</strong>
+                        <span>CPUs, socket, núcleos e preço</span>
+                    </span>
                 </a>
                 <a class="tile" href="{% url 'placamae-list' %}">
-                    <strong>Placas-mãe</strong>
-                    <span>Chipset, RAM e conectividade</span>
+                    <span class="tile-icon"><i class="bi bi-motherboard"></i></span>
+                    <span class="tile-text">
+                        <strong>Placas-mãe</strong>
+                        <span>Chipset, RAM e conectividade</span>
+                    </span>
                 </a>
                 <a class="tile" href="{% url 'memoriam-list' %}">
-                    <strong>Memórias RAM</strong>
-                    <span>Tipo, frequência e capacidade</span>
+                    <span class="tile-icon"><i class="bi bi-memory"></i></span>
+                    <span class="tile-text">
+                        <strong>Memórias RAM</strong>
+                        <span>Tipo, frequência e capacidade</span>
+                    </span>
                 </a>
                 <a class="tile" href="{% url 'placavideo-list' %}">
-                    <strong>Placas de vídeo</strong>
-                    <span>GPU, VRAM e consumo</span>
+                    <span class="tile-icon"><i class="bi bi-gpu-card"></i></span>
+                    <span class="tile-text">
+                        <strong>Placas de vídeo</strong>
+                        <span>GPU, VRAM e consumo</span>
+                    </span>
                 </a>
                 <a class="tile" href="{% url 'armazenamento-list' %}">
-                    <strong>Armazenamento</strong>
-                    <span>SSD/HDD, interface e velocidade</span>
+                    <span class="tile-icon"><i class="bi bi-device-hdd"></i></span>
+                    <span class="tile-text">
+                        <strong>Armazenamento</strong>
+                        <span>SSD/HDD, interface e velocidade</span>
+                    </span>
                 </a>
                 <a class="tile" href="{% url 'fonte-list' %}">
-                    <strong>Fontes</strong>
-                    <span>Potência e certificação</span>
+                    <span class="tile-icon"><i class="bi bi-plug"></i></span>
+                    <span class="tile-text">
+                        <strong>Fontes</strong>
+                        <span>Potência e certificação</span>
+                    </span>
                 </a>
+                {% if request.user.is_authenticated %}
+                <a class="tile" href="{% url 'montagem-list' %}" style="border-color: var(--clr-primary);">
+                    <span class="tile-icon" style="background: var(--clr-primary); color: #fff;"><i class="bi bi-pc-display"></i></span>
+                    <span class="tile-text">
+                        <strong>Minhas Montagens</strong>
+                        <span>Monte, compare e finalize seu PC</span>
+                    </span>
+                </a>
+                {% endif %}
             </div>
         </section>
+
+        {% if request.user.is_authenticated %}
+        <section class="card" style="margin-top: 20px;">
+            <div class="section-header">
+                <h3 class="section-title mb-0" style="font-size: 1.3rem;">Suas montagens recentes</h3>
+                <a href="{% url 'montagem-create' %}" class="btn btn-primary btn-sm"><i class="bi bi-plus-lg me-1"></i>Nova montagem</a>
+            </div>
+            {% if minhas_montagens %}
+                <div class="table-responsive">
+                    <table class="table table-arena mb-0">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Processador</th>
+                                <th>Placa-mãe</th>
+                                <th>Situação</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for montagem in minhas_montagens %}
+                            <tr>
+                                <td>{{ montagem.nome }}</td>
+                                <td>{{ montagem.processador|default:"-" }}</td>
+                                <td>{{ montagem.placa_mae|default:"-" }}</td>
+                                <td>
+                                    {% if montagem.finalizada %}
+                                        <span class="badge-s s-finalizada"><i class="bi bi-check-circle"></i>Finalizada</span>
+                                    {% else %}
+                                        <span class="badge-s s-andamento"><i class="bi bi-hourglass-split"></i>Em andamento</span>
+                                    {% endif %}
+                                </td>
+                                <td class="text-end">
+                                    <a href="{% url 'montagem-detail' montagem.pk %}" class="btn btn-sm btn-outline-primary">Ver</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="text-muted mb-0">Você ainda não criou nenhuma montagem. <a href="{% url 'montagem-create' %}">Comece agora</a>.</p>
+            {% endif %}
+        </section>
+        {% endif %}
+
+        <section class="card" style="margin-top: 20px;">
+            <h3 class="section-title mb-3" style="font-size: 1.3rem;">Catálogo em números</h3>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <div class="kpi-card">
+                        <span class="kpi-icon"><i class="bi bi-award"></i></span>
+                        <div>
+                            <div class="kpi-label">Fabricantes cadastrados</div>
+                            <div class="kpi-value">{{ total_fabricantes }}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="kpi-label mb-2">Processadores recentes</div>
+                    <ul class="list-unstyled mb-0">
+                        {% for processador in ultimos_processadores %}
+                            <li class="mb-1"><i class="bi bi-cpu text-accent me-2"></i>{{ processador.nome }} <span class="text-muted">({{ processador.fabricante }})</span></li>
+                        {% empty %}
+                            <li class="text-muted">Nenhum processador cadastrado ainda.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        {% if not request.user.is_authenticated %}
+        <section class="card text-center" style="margin-top: 20px; background: var(--clr-primary-l); border-color: var(--clr-primary);">
+            <h3 class="section-title mb-2" style="font-size: 1.3rem;">Pronto para montar o seu PC?</h3>
+            <p class="text-muted mb-3">Entre na sua conta para começar a criar montagens e verificar a compatibilidade dos componentes.</p>
+            <div>
+                <a href="{% url 'login' %}" class="btn btn-primary"><i class="bi bi-box-arrow-in-right me-1"></i>Entrar</a>
+            </div>
+        </section>
+        {% endif %}
         {% endblock %}
     </main>
+
+    <footer class="site-footer">
+        <div class="container d-flex flex-column flex-sm-row justify-content-between align-items-center gap-2">
+            <span><i class="bi bi-pc-display me-1"></i>Meu Desktop &mdash; Engenharia de Software, IFPR</span>
+            <span>&copy; {% now "Y" %} Todos os direitos reservados.</span>
+        </div>
+    </footer>
 
     <script>
         const menuToggle = document.querySelector('.menu-toggle');

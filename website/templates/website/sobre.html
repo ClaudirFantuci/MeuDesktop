@@ -3,6 +3,10 @@
 
 {% block title %}Meu Desktop - Sobre{% endblock %}
 
+{% block breadcrumb %}
+<li class="breadcrumb-item active" aria-current="page">Sobre</li>
+{% endblock breadcrumb %}
+
 {% block content %}
 <section class="card">
     <h2>Sobre o Meu Desktop</h2>
@@ -71,7 +75,7 @@
             <strong>Diagrama de Caso de Uso</strong>
             <span>Mostra as interações do usuário com as funcionalidades do sistema.</span>
             <img
-                src="{% static 'jLRDJjj04Bv7oZjCqqFR0mYJ7qX54SPngaX0K4nwGaABlIGZxDreTqrQAgJsr1Te7w3geG-ID-cJTDVOrE2bgeIxf_NCDxCptpUxyfvKHAWqYM60P2P8Giuy8lc0JYK_E-HCaHbDpewzPgFPUARcDA6mY0coPaDU8biG7G4aL5m4waDCWIofv0ajUrD9GoBfKESAy9g2qxPuzqbuEHCyPP.png' %}"
+                src="{% static 'img/diagrama-caso-de-uso.png' %}"
                 alt="Diagrama de caso de uso do sistema"
                 style="width: 100%; border-radius: 10px; margin-top: 10px;"
             />
@@ -80,7 +84,7 @@
             <strong>Diagrama de Classes</strong>
             <span>Define as entidades e relacionamentos entre componentes.</span>
             <img
-                src="{% static 'nLZTJkD65Bv7oZjCqui24hl0BbkAjcXDua2q-K5ne5LLoPhOasIAxV7EZ1TAnLKVfHTz45wiP_oN6STXio9boONjETyvC_xEh_aW9EOo2GFKfdZ6SOZTLe258CBjiqZY6GdTorPZgx7rdPoJaA0um3HgR8aR6iKOyCXJS4jAJYU995sFHGwz9sX_2TC1UwdeuEsIx8.png' %}"
+                src="{% static 'img/diagrama-classes.png' %}"
                 alt="Diagrama de classes do sistema"
                 style="width: 100%; border-radius: 10px; margin-top: 10px;"
             />
@@ -95,7 +99,11 @@
         simular combinações e montar um computador sem erros de compatibilidade.
     </p>
     <div class="actions">
-        <a class="btn" href="{% url 'index' %}">Explorar catálogo</a>
+        {% if request.user.is_authenticated %}
+            <a class="btn" href="{% url 'montagem-list' %}">Minhas montagens</a>
+        {% else %}
+            <a class="btn" href="{% url 'login' %}">Entrar e começar a montar</a>
+        {% endif %}
         <a class="btn btn-secondary" href="{% url 'contato' %}">Falar conosco</a>
     </div>
 </section>

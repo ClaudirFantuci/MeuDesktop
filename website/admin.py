@@ -1,5 +1,15 @@
 from django.contrib import admin
-from .models import Armazenamento, Fabricante, Fonte, MemoriaRAM, PlacaDeVideo, PlacaMae, Processador
+from .models import (
+	Armazenamento,
+	Fabricante,
+	Fonte,
+	HistoricoMontagem,
+	MemoriaRAM,
+	Montagem,
+	PlacaDeVideo,
+	PlacaMae,
+	Processador,
+)
 
 # Register your models here.
 
@@ -50,3 +60,24 @@ class FonteAdmin(admin.ModelAdmin):
 	list_display = ("nome", "fabricante", "potencia_watts", "certificacao", "preco", "disponivel")
 	list_filter = ("certificacao", "modular", "disponivel", "fabricante")
 	search_fields = ("nome",)
+
+
+class HistoricoMontagemInline(admin.TabularInline):
+	model = HistoricoMontagem
+	extra = 0
+	readonly_fields = ("acao", "componente_tipo", "componente_nome", "data")
+	can_delete = False
+
+
+@admin.register(Montagem)
+class MontagemAdmin(admin.ModelAdmin):
+	list_display = ("nome", "usuario", "processador", "placa_mae", "finalizada", "data_atualizacao")
+	list_filter = ("finalizada", "usuario")
+	search_fields = ("nome",)
+	inlines = [HistoricoMontagemInline]
+
+
+@admin.register(HistoricoMontagem)
+class HistoricoMontagemAdmin(admin.ModelAdmin):
+	list_display = ("montagem", "acao", "componente_tipo", "componente_nome", "data")
+	list_filter = ("acao",)
