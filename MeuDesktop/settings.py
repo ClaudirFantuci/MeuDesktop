@@ -14,8 +14,12 @@ from pathlib import Path
 import os
 from urllib.parse import urlparse, parse_qsl
 
+from dotenv import load_dotenv
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(BASE_DIR / ".env")
+TAREFAS_SEGREDO = os.environ.get("TAREFAS_SEGREDO", "")
 
 
 # Quick-start development settings - unsuitable for production
@@ -43,6 +47,7 @@ INSTALLED_APPS = [
     "crispy_bootstrap5",
 
     "website.apps.WebsiteConfig",
+    "ia.apps.IaConfig",
 
     # Ativar o Django Debug Toolbar - Passo 1
     "debug_toolbar",

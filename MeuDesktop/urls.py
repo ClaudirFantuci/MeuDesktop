@@ -21,6 +21,7 @@ from django.urls import path, include
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("website.urls")),
+    path("ia/", include(("ia.urls", "ia"), namespace="ia")),
 ]
 
 # Django Debug Toolbar - Passo 4 (somente em modo DEBUG)

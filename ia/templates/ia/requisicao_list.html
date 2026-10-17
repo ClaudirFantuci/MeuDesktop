@@ -1,0 +1,43 @@
+{% extends "website/model.html" %}
+
+{% block title %}Requisições de IA{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item active">Requisições de IA</li>
+{% endblock breadcrumb %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="section-title mb-0">Requisições de IA</h2>
+    <span class="text-muted">Resumo desde {{ resumo_mes|default:"o início do mês" }}</span>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3"><div class="kpi-card"><div class="kpi-label">Tokens no mês</div><div class="kpi-value">{{ resumo.tokens }}</div></div></div>
+    <div class="col-md-3"><div class="kpi-card"><div class="kpi-label">Custo estimado</div><div class="kpi-value">US$ {{ resumo.custo|floatformat:6 }}</div></div></div>
+    <div class="col-md-3"><div class="kpi-card"><div class="kpi-label">Erros</div><div class="kpi-value text-accent">{{ resumo.erros }}</div></div></div>
+    <div class="col-md-3"><div class="kpi-card"><div class="kpi-label">Filtros</div><div class="kpi-value"><i class="bi bi-funnel"></i></div></div></div>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <form method="get" class="row g-2 align-items-end">
+            <div class="col-md-2"><label class="form-label" for="usuario">Usuário</label><select class="form-select" id="usuario" name="usuario"><option value="">Todos</option>{% for usuario in usuarios_filtro %}<option value="{{ usuario.pk }}"{% if request.GET.usuario == usuario.pk|stringformat:"s" %} selected{% endif %}>{{ usuario.username }}</option>{% endfor %}</select></div>
+            <div class="col-md-2"><label class="form-label" for="situacao">Situação</label><select class="form-select" id="situacao" name="situacao"><option value="">Todas</option>{% for valor, rotulo in situacoes %}<option value="{{ valor }}"{% if request.GET.situacao == valor %} selected{% endif %}>{{ rotulo }}</option>{% endfor %}</select></div>
+            <div class="col-md-2"><label class="form-label" for="origem">Origem</label><select class="form-select" id="origem" name="origem"><option value="">Todas</option>{% for valor, rotulo in origens %}<option value="{{ valor }}"{% if request.GET.origem == valor %} selected{% endif %}>{{ rotulo }}</option>{% endfor %}</select></div>
+            <div class="col-md-2"><label class="form-label" for="finalidade">Finalidade</label><input class="form-control" id="finalidade" name="finalidade" value="{{ request.GET.finalidade }}"></div>
+            <div class="col-md-1"><label class="form-label" for="inicio">De</label><input class="form-control" type="date" id="inicio" name="inicio" value="{{ request.GET.inicio }}"></div>
+            <div class="col-md-1"><label class="form-label" for="fim">Até</label><input class="form-control" type="date" id="fim" name="fim" value="{{ request.GET.fim }}"></div>
+            <div class="col-md-2 d-flex gap-2"><button class="btn btn-primary" type="submit"><i class="bi bi-search me-1"></i>Filtrar</button><a class="btn btn-outline-secondary" href="{% url 'ia:requisicoes' %}">Limpar</a></div>
+        </form>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-lg-6"><div class="card h-100"><div class="card-body"><h5 class="section-title">Referências que mais gastaram</h5>{% for item in resumo.referencias %}<div class="d-flex justify-content-between border-bottom py-2"><span>{{ item.nome }}</span><strong>US$ {{ item.custo|floatformat:6 }}</strong></div>{% empty %}<p class="text-muted mb-0">Nenhuma referência no mês.</p>{% endfor %}</div></div></div>
+    <div class="col-lg-6"><div class="card h-100"><div class="card-body"><h5 class="section-title">Usuários que mais gastaram</h5>{% for item in resumo.usuarios %}<div class="d-flex justify-content-between border-bottom py-2"><span>{{ item.usuario__username }}</span><strong>US$ {{ item.custo|floatformat:6 }}</strong></div>{% empty %}<p class="text-muted mb-0">Nenhum usuário no mês.</p>{% endfor %}</div></div></div>
+</div>
+
+<div class="card shadow-sm"><div class="card-body p-0"><div class="table-responsive"><table class="table table-arena mb-0 align-middle"><thead><tr><th>Data/hora</th><th>Usuário</th><th>Finalidade</th><th>Referência</th><th>Situação</th><th>Tokens</th><th>Custo</th><th>Duração</th></tr></thead><tbody>{% for requisicao in requisicoes %}<tr><td><a href="{% url 'ia:requisicao-detail' requisicao.pk %}">{{ requisicao.criado_em|date:"d/m/Y H:i" }}</a></td><td>{{ requisicao.usuario.username }}</td><td>{{ requisicao.finalidade }}</td><td>{% if requisicao.referencia %}{{ requisicao.referencia }}{% else %}—{% endif %}</td><td>{% if requisicao.situacao == "sucesso" %}<span class="badge bg-success">Sucesso</span>{% else %}<span class="badge bg-danger">{{ requisicao.get_situacao_display }}</span>{% endif %}</td><td>{{ requisicao.tokens_total }}</td><td>US$ {{ requisicao.custo_estimado|floatformat:6 }}</td><td>{{ requisicao.duracao_ms }} ms</td></tr>{% empty %}<tr><td colspan="8" class="text-center py-4 text-muted">Nenhuma requisição encontrada.</td></tr>{% endfor %}</tbody></table></div></div></div>
+{% include "website/includes/pagination.html" %}
+{% endblock content %}

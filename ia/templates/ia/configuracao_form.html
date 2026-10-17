@@ -1,0 +1,14 @@
+{% extends "website/model.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Configuração da IA{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item active">Configuração da IA</li>
+{% endblock breadcrumb %}
+
+{% block content %}
+<h2 class="section-title mb-2">Configuração da IA</h2>
+<div class="alert alert-info"><i class="bi bi-info-circle me-2"></i>As mudanças valem na próxima chamada, sem deploy.</div>
+<form method="post"><div class="card shadow-sm"><div class="card-body"><h4 class="section-title">Modelo</h4><div class="row">{% for field in form %}{% if field.name in "provedor modelo temperatura max_tokens_saida nivel_raciocinio tentativas timeout_s" %}<div class="col-md-6">{{ field|as_crispy_field }}</div>{% endif %}{% endfor %}</div><hr><h4 class="section-title">Limites padrão por usuário</h4><div class="row">{% for field in form %}{% if field.name in "limite_mensal_usuario aviso_percentual reserva_minima_tokens" %}<div class="col-md-4">{{ field|as_crispy_field }}</div>{% endif %}{% endfor %}</div><hr><h4 class="section-title">Proteção do sistema</h4><div class="row">{% for field in form %}{% if field.name in "limite_mensal_sistema tamanho_maximo_mb pdf_max_paginas reter_requisicoes_dias" %}<div class="col-md-6">{{ field|as_crispy_field }}</div>{% endif %}{% endfor %}</div><hr><h4 class="section-title">Preços</h4><div class="row">{% for field in form %}{% if field.name in "preco_entrada_milhao preco_saida_milhao" %}<div class="col-md-6">{{ field|as_crispy_field }}</div>{% endif %}{% endfor %}</div></div><div class="card-footer d-flex gap-2"><button class="btn btn-primary" type="submit"><i class="bi bi-check-circle me-1"></i>Salvar</button><button class="btn btn-outline-primary" type="submit" name="testar_conexao" value="1"><i class="bi bi-plug me-1"></i>Testar conexão</button></div></div>{% csrf_token %}</form>
+{% endblock content %}

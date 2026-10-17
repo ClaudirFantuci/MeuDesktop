@@ -1,0 +1,13 @@
+{% extends "website/model.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}IA por usuário{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{% url 'ia:usuarios' %}">IA por usuário</a></li>
+<li class="breadcrumb-item active">{{ usuario.username }}</li>
+{% endblock breadcrumb %}
+
+{% block content %}
+<div class="row justify-content-center"><div class="col-lg-7"><div class="card shadow-sm"><div class="card-header bg-primary text-white"><h4 class="mb-0">Configuração de IA: {{ usuario.username }}</h4></div><div class="card-body"><form method="post">{% csrf_token %}{{ form|crispy }}<div class="d-flex gap-2 mt-4"><button class="btn btn-primary" type="submit"><i class="bi bi-check-circle me-1"></i>Salvar</button><a class="btn btn-outline-secondary" href="{% url 'ia:usuarios' %}">Cancelar</a></div></form><form method="post" action="{% url 'ia:usuario-padrao' usuario.pk %}" class="mt-3">{% csrf_token %}<button class="btn btn-outline-warning" type="submit"><i class="bi bi-arrow-counterclockwise me-1"></i>Voltar ao padrão</button></form></div></div></div></div>
+{% endblock content %}

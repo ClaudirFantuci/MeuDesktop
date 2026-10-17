@@ -1,0 +1,13 @@
+{% extends "website/model.html" %}
+
+{% block title %}Meu consumo de IA{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item active">Meu consumo de IA</li>
+{% endblock breadcrumb %}
+
+{% block content %}
+<h2 class="section-title mb-4">Meu consumo de IA</h2>
+<div class="card shadow-sm mb-4"><div class="card-body"><div class="d-flex justify-content-between align-items-center mb-2"><div><strong>{{ cota.usado }}</strong> de <strong>{{ cota.limite }}</strong> tokens usados</div><span>{{ percentual_barra|floatformat:1 }}%</span></div><div class="progress" role="progressbar" aria-valuenow="{{ percentual_barra|floatformat:0 }}" aria-valuemin="0" aria-valuemax="100" style="height: 18px;"><div class="progress-bar{% if cota.em_alerta %} bg-warning{% else %} bg-primary{% endif %}" style="width: {{ percentual_barra|floatformat:0 }}%;"></div></div><div class="row mt-3"><div class="col-md-4"><span class="text-muted">Restante</span><br><strong>{{ cota.restante }}</strong> tokens</div><div class="col-md-4"><span class="text-muted">Renovação</span><br><strong>{{ cota.renova_em|date:"d/m/Y" }}</strong></div><div class="col-md-4"><span class="text-muted">Situação</span><br>{% if cota.esgotada %}<span class="badge bg-danger">Esgotada</span>{% elif cota.em_alerta %}<span class="badge bg-warning text-dark">Em alerta</span>{% else %}<span class="badge bg-success">Disponível</span>{% endif %}</div></div></div></div>
+<div class="card shadow-sm"><div class="card-body"><h4 class="section-title mb-3">Últimas requisições</h4><div class="table-responsive"><table class="table table-arena mb-0"><thead><tr><th>Data/hora</th><th>Finalidade</th><th>Situação</th><th>Tokens</th></tr></thead><tbody>{% for requisicao in requisicoes %}<tr><td>{{ requisicao.criado_em|date:"d/m/Y H:i" }}</td><td>{{ requisicao.finalidade }}</td><td>{% if requisicao.situacao == "sucesso" %}<span class="badge bg-success">Sucesso</span>{% else %}<span class="badge bg-danger">{{ requisicao.get_situacao_display }}</span>{% endif %}</td><td>{{ requisicao.tokens_total }}</td></tr>{% empty %}<tr><td colspan="4" class="text-center text-muted py-4">Você ainda não possui requisições.</td></tr>{% endfor %}</tbody></table></div></div></div>
+{% endblock content %}

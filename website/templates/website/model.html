@@ -63,6 +63,20 @@
 
                 {% if request.user.is_authenticated %}
                     <a href="{% url 'montagem-list' %}"><i class="bi bi-pc-display me-1"></i>Minhas Montagens</a>
+                    <a href="{% url 'ia:consumo' %}"><i class="bi bi-speedometer2 me-1"></i>Meu consumo de IA</a>
+
+                    {% if request.user.is_superuser %}
+                    <div class="dropdown">
+                        <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="padding:.5rem .8rem; border-radius:.5rem; color: var(--clr-text); font-weight:500; font-size:.95rem;">
+                            <i class="bi bi-robot me-1"></i>IA
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow">
+                            <li><a class="dropdown-item" href="{% url 'ia:requisicoes' %}"><i class="bi bi-list-check me-2"></i>Requisições de IA</a></li>
+                            <li><a class="dropdown-item" href="{% url 'ia:configuracao' %}"><i class="bi bi-sliders me-2"></i>Configuração da IA</a></li>
+                            <li><a class="dropdown-item" href="{% url 'ia:usuarios' %}"><i class="bi bi-people me-2"></i>IA por usuário</a></li>
+                        </ul>
+                    </div>
+                    {% endif %}
 
                     <div class="dropdown">
                         <button class="user-pill border-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
